@@ -1,0 +1,42 @@
+#!/bin/bash
+
+set -eou pipefail
+# required for lastpipe
+set +m
+shopt -s lastpipe
+
+function find_package_in_cache() {
+    to_search=$1
+    if [[ ! "$to_search" =~ rpm$ ]]; then
+        to_search="$1.rpm"
+    fi
+
+    for repo in /var/cache/zypp/packages/*; do
+        for repo_arch in "$repo"/*; do
+            for pkg in "$repo_arch"/*; do
+                if [[ $(basename "$pkg") == "$to_search" ]]; then
+                    echo "$pkg"
+                fi
+            done
+        done
+    done
+}
+
+mkdir -p /var/cache/rpms/
+
+pkgs=()
+
+zypper -n -x --disable-system-resolvables in -f --download-only --no-recommends "$@" 2> /dev/null |
+    sed '/^<message type="info">\(In cache\|Retrieving package\)/!d' |
+    # sed '/^\(In cache\|Retrieving package\)/!d' |
+    while IFS= read -r line; do
+        if [[ $line =~ In[[:space:]]cache[[:space:]]([^[:space:]]*) ]] || [[ $line =~ Retrieving[[:space:]]package[[:space:]]([^[:space:]]*) ]]; then
+            pkgs+=("${BASH_REMATCH[1]}")
+        fi
+    done
+
+for pkg in "${pkgs[@]}"; do
+    dest=$(find_package_in_cache "$pkg")
+    echo "$dest"
+    mv "$dest" /var/cache/rpms/
+done
