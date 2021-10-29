@@ -1,0 +1,19 @@
+[tool.poetry]
+name = "zypp-downloader"
+version = "0.1.0"
+description = "Zypper based rpm downloader"
+authors = ["Dan Čermák <dcermak@suse.com>"]
+license = "GPLv2+"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+
+[tool.poetry.dev-dependencies]
+pytest = ">=6.2"
+black = ">=21.9b0"
+pytest-container = {git = "https://github.com/dcermak/pytest_container", rev = "main"}
+pytest-xdist = ">=2.4"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
