@@ -37,6 +37,5 @@ zypper -n -x --disable-system-resolvables in -f --download-only --no-recommends 
 
 for pkg in "${pkgs[@]}"; do
     dest=$(find_package_in_cache "$pkg")
-    echo "$dest"
     mv "$dest" /var/cache/rpms/
 done
