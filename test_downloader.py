@@ -1,5 +1,5 @@
 import pytest
-from pytest_container import  MultiStageBuild
+from pytest_container import MultiStageBuild
 from pytest_container import DerivedContainer
 
 
@@ -39,6 +39,7 @@ def test_run_downloader(
     container_runtime, container, containerfile, tmp_path, pytestconfig
 ):
     build = MultiStageBuild(
-        containers={"downloader": container}, containerfile_template=containerfile
+        containers={"downloader": container},
+        containerfile_template=containerfile,
     )
     build.build(tmp_path, pytestconfig, container_runtime)
