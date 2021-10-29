@@ -35,3 +35,11 @@ jobs:
           pip install --user poetry
           poetry install
           poetry run pytest -vv -n auto
+
+  lint:
+    name: Lint the source code
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Run ShellCheck
+        uses: ludeeus/action-shellcheck@master
