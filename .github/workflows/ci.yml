@@ -1,0 +1,37 @@
+---
+name: CI
+
+on:
+  push:
+    branches:
+      - "main"
+  pull_request:
+
+jobs:
+  format:
+    name: Ensure code is black formatted
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v2
+      - name: set up Python
+        uses: actions/setup-python@v2
+      - name: ensure that the code is formatted properly
+        run: |
+          pip install --user poetry
+          poetry install
+          poetry run black --check --diff *py
+
+  tests:
+    name: Test container builds
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout source code
+        uses: actions/checkout@v2
+      - name: set up Python
+        uses: actions/setup-python@v2
+      - name: run the integration tests
+        run: |
+          pip install --user poetry
+          poetry install
+          poetry run pytest -vv -n auto
