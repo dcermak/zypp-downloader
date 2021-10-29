@@ -1,5 +1,7 @@
 # zypp-downloader
 
+[![CI](https://github.com/dcermak/zypp-downloader/actions/workflows/ci.yml/badge.svg)](https://github.com/dcermak/zypp-downloader/actions/workflows/ci.yml)
+
 `zypp-downloader` is a tiny shell script that downloads the recursive
 dependencies of a list of packages from the repositories of your current system
 via `zypper`.
